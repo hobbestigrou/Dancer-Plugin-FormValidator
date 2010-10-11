@@ -16,7 +16,7 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc Dancer::Plugin::Database
+    perldoc Dancer::Plugin::FormValidator
 
 LICENSE AND COPYRIGHT
 
