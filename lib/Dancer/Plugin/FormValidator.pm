@@ -3,7 +3,6 @@ package Dancer::Plugin::FormValidator;
 use strict;
 use warnings;
 use Dancer::Plugin;
-use Dancer::Error;
 use Data::FormValidator;
 
 =head1 NAME
@@ -35,16 +34,7 @@ register form_validator_error => sub {
             $string = "$settings->{msg}->{several} @errors";
         }
         
-        my $error_params = {
-            code    => 500,
-            message => $string 
-        };
-
-        $error_params->{title} = $settings->{msg}->{title}  
-            if $settings->{msg}->{title};
-
-        my $dancer_error = Dancer::Error->new($error_params);
-        Dancer::Response::set($dancer_error->render);
+        return halt($string)
     }
 
     return 0;
