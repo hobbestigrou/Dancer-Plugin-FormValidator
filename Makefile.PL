@@ -3,7 +3,7 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    Name          => 'Dancer::Plugin::FormValidator',
+    NAME          => 'Dancer::Plugin::FormValidator',
     AUTHOR        => q{Natal Ngétal <hobbestigrou@erakis.im>},
     VERSION_FROM  => 'lib/Dancer/Plugin/FormValidator.pm',
     ABSTRACT_FROM => 'lib/Dancer/Plugin/FormValidator.pm',
