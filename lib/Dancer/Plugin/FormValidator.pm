@@ -78,7 +78,6 @@ keyword within your L<Dancer> application.
              msg: 
                  single: 'Missing field'
                  several: 'Missing fields'
-                 title: 'Page title'
 
 =head1 AUTHOR
 
@@ -94,7 +93,7 @@ Feel free to fork the repo and submit pull requests
 
 =head1 ACKNOWLEDGEMENTS
 
-Alexis Sukrieh
+Alexis Sukrieh and Franck Cuny
 
 =head1 BUGS
 
