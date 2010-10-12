@@ -2,6 +2,7 @@ package Dancer::Plugin::FormValidator;
 
 use strict;
 use warnings;
+use Dancer ':syntax';
 use Dancer::Plugin;
 use Data::FormValidator;
 
