@@ -13,35 +13,73 @@ based on input profile for Dancer applications.
 
 =cut
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 my $settings = plugin_setting;
+my $results;
 
 register form_validator_error => sub {
     my ( $profil, $input_hash ) = @_;
     
     my $dfv = Data::FormValidator->new($settings->{profil_file});
     
-    my $results = $dfv->check($input_hash, $profil);
-
+    $results = $dfv->check($input_hash, $profil);
+    
     if ( $results->has_invalid || $results->has_missing ) { 
-        my @errors = keys(%{$results->{missing}});
-        my $string;
 
-        if ( scalar(@errors) == 1 ) {
-            $string = "$settings->{msg}->{single} @errors";
+        if ( $settings->{halt} ) {
+            my @errors = keys(%{$results->{missing}});
+            my $string;
+
+            if ( scalar(@errors) == 1 ) {
+                $string = "$settings->{msg}->{single} @errors";
+            }
+            else {
+                $string = "$settings->{msg}->{several} @errors";
+            }
+            
+            return halt($string);
         }
         else {
-            $string = "$settings->{msg}->{several} @errors";
+            my $errors;
+
+            if ( $results->has_missing ) {
+                $errors = _error_return('missing');
+            }
+
+           if ( $results->has_invalid ) {
+                $errors = _error_return('invalid');
+           }
+
+           return $errors;
         }
-        
-        return halt($string)
     }
 
     return 0;
 };
 
 register_plugin;
+
+sub _error_return {
+    my $reason = shift;
+
+    my @errors = keys(%{$results->{$reason}});
+    my $errors;
+    my $value;
+
+    if ( $results->{profile}->{msgs}->{$reason} ) {
+        $value = $results->{profile}->{msgs}->{$reason};
+    }
+    else {
+        $value = $settings->{msg}->{single};
+    }
+
+    foreach my $msg_errors (@errors) {
+        $errors->{$msg_errors} = $value;
+    }
+   
+   return $errors;
+}
 
 =head1 SYNOPSIS
 
@@ -65,6 +103,18 @@ register_plugin;
     
     dance;
 
+The profile_file example: 
+
+     {                                                                                                                                                         
+         add_page => {
+             'required' => [ qw(
+                 Name Subject Body
+              )],
+              msgs => {
+                missing => 'Not Here!',
+              }
+         },
+     }
 
 =head1 DESCRIPTION
 
@@ -76,9 +126,14 @@ keyword within your L<Dancer> application.
      plugins:
          FormValidator:
              profil_file: '/path/to/profiles.pl'
+             halt: 0
              msg: 
                  single: 'Missing field'
                  several: 'Missing fields'
+
+If you don't use halt, a hashref is return with name of fields for the key and 
+reason of the value use msgs profile, if you missing specified a msgs in a profil, 
+msg single is use.
 
 =head1 AUTHOR
 
