@@ -1,6 +1,5 @@
 TODO:
 
-  * When errors, return hash with error, or halt() with message
   * For the profile file can use yaml or another format
   * Check the directory with setting('appdir'), and concat with file name
   * Add tests

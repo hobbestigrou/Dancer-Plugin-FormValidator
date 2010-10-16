@@ -1,4 +1,7 @@
 Revision history for Dancer-Plugin-FormValidator
 
+0.2 16/10/2010
+    Errors can return hash with errors or use halt(). 
+
 0.1 11/10/2010
     Initial version developed.
