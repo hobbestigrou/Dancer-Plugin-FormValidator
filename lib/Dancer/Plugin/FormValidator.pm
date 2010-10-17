@@ -13,7 +13,7 @@ based on input profile for Dancer applications.
 
 =cut
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 my $settings = plugin_setting;
 my $results;
@@ -21,7 +21,9 @@ my $results;
 register form_validator_error => sub {
     my ( $profil, $input_hash ) = @_;
     
-    my $dfv = Data::FormValidator->new($settings->{profil_file});
+    my $profil_file = setting('appdir') . '/' . $settings->{profil_file};
+    
+    my $dfv = Data::FormValidator->new($profil_file);
     
     $results = $dfv->check($input_hash, $profil);
     
@@ -125,7 +127,7 @@ keyword within your L<Dancer> application.
 
      plugins:
          FormValidator:
-             profil_file: '/path/to/profiles.pl'
+             profil_file: 'profiles.pl'
              halt: 0
              msg: 
                  single: 'Missing field'
@@ -133,7 +135,7 @@ keyword within your L<Dancer> application.
 
 If you don't use halt, a hashref is return with name of fields for the key and 
 reason of the value use msgs profile, if you missing specified a msgs in a profil, 
-msg single is use.
+msg single is use. For the profile_file it begins at the application root.
 
 =head1 AUTHOR
 

@@ -1,5 +1,4 @@
 TODO:
 
   * For the profile file can use yaml or another format
-  * Check the directory with setting('appdir'), and concat with file name
   * Add tests

@@ -1,5 +1,8 @@
 Revision history for Dancer-Plugin-FormValidator
 
+0.3 17/10/2010
+    Use setting('appdir') for to know the path of application, and concat with file name.
+
 0.2 16/10/2010
     Errors can return hash with errors or use halt(). 
 
