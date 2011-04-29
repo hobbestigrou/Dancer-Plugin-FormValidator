@@ -8,27 +8,24 @@ use Data::FormValidator;
 
 =head1 NAME
 
-Dancer::Plugin::FormValidator - easy validates user input (usually from an HTML form) 
+Dancer::Plugin::FormValidator - easy validates user input (usually from an HTML form)
 based on input profile for Dancer applications.
 
 =cut
 
-our $VERSION = '0.3';
+our $VERSION = '0.4';
 
 my $settings = plugin_setting;
 my $results;
 
 register form_validator_error => sub {
     my ( $profil, $input_hash ) = @_;
-    
-    my $profil_file = setting('appdir') . '/' . $settings->{profil_file};
-    
-    my $dfv = Data::FormValidator->new($profil_file);
-    
-    $results = $dfv->check($input_hash, $profil);
-    
-    if ( $results->has_invalid || $results->has_missing ) { 
 
+    my $profil_file = setting('appdir') . '/' . $settings->{profil_file};
+    my $dfv         = Data::FormValidator->new($profil_file);
+    $results        = $dfv->check($input_hash, $profil);
+
+    if ( $results->has_invalid || $results->has_missing ) {
         if ( $settings->{halt} ) {
             my @errors = keys(%{$results->{missing}});
             my $string;
@@ -39,7 +36,7 @@ register form_validator_error => sub {
             else {
                 $string = "$settings->{msg}->{several} @errors";
             }
-            
+
             return halt($string);
         }
         else {
@@ -79,9 +76,11 @@ sub _error_return {
     foreach my $msg_errors (@errors) {
         $errors->{$msg_errors} = $value;
     }
-   
+
    return $errors;
 }
+
+=encoding utf8
 
 =head1 SYNOPSIS
 
@@ -102,12 +101,12 @@ sub _error_return {
             # data it's cool to proceed
         }
     };
-    
+
     dance;
 
-The profile_file example: 
+The profile_file example:
 
-     {                                                                                                                                                         
+     {
          add_page => {
              'required' => [ qw(
                  Name Subject Body
@@ -129,12 +128,12 @@ keyword within your L<Dancer> application.
          FormValidator:
              profil_file: 'profiles.pl'
              halt: 0
-             msg: 
+             msg:
                  single: 'Missing field'
                  several: 'Missing fields'
 
-If you don't use halt, a hashref is return with name of fields for the key and 
-reason of the value use msgs profile, if you missing specified a msgs in a profil, 
+If you don't use halt, a hashref is return with name of fields for the key and
+reason of the value use msgs profile, if you missing specified a msgs in a profil,
 msg single is use. For the profile_file it begins at the application root.
 
 =head1 AUTHOR
@@ -178,6 +177,6 @@ See http://dev.perl.org/licenses/ for more information.
 L<Dancer>
 L<Data::FormValidator>
 
-=cut 
+=cut
 
 1;

@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME          => 'Dancer::Plugin::FormValidator',
-    AUTHOR        => q{Natal Ngétal <hobbestigrou@erakis.im>},
+    AUTHOR        => q{Natal Ngétal <hobbestig@cpan.org>},
     VERSION_FROM  => 'lib/Dancer/Plugin/FormValidator.pm',
     ABSTRACT_FROM => 'lib/Dancer/Plugin/FormValidator.pm',
     PREREQ_PM => {
