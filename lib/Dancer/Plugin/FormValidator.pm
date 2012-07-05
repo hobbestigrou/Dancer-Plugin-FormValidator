@@ -89,9 +89,9 @@ sub _error_return {
 
     get '/contact/form' => sub {
         my $input_hash = {
-            Name    = $params->{name};
-            Subject = $params->{subject};
-            Body    = $params->{body};
+            Name    => $params->{name},
+            Subject => $params->{subject},
+            Body    => $params->{body},
         };
 
         my $error = form_validator_error( 'profil_contact', $input_hash );
