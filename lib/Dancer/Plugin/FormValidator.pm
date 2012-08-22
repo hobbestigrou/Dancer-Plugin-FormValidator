@@ -35,7 +35,7 @@ register form_validator_error => sub {
         else {
             return $results->has_missing
                 ? _error_return('missing')
-                : $errors = _error_return('invalid');
+                : _error_return('invalid');
         }
     }
 
