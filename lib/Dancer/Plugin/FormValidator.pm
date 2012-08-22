@@ -5,11 +5,17 @@ use warnings;
 
 use Dancer ':syntax';
 use Dancer::Plugin;
+use Dancer::Exception qw(:all);
 
 use Data::FormValidator;
 use Module::Load;
 
 #ABSTRACT: Easy validates user input (usually from an HTML form) based on input profile for Dancer applications.
+
+#Register exception
+register_exception('ProfileInvalidFormat',
+    message_pattern => "Unknown format use yml, json or pl: %s"
+);
 
 my $settings = plugin_setting;
 my $dfv;
@@ -152,7 +158,7 @@ sub _init_object_dfv {
         $dfv = Data::FormValidator->new($deserialize->($profil_file));
     }
     else {
-        die "Format $ext $profil_file is not supported", "\n";
+        raise ProfileInvalidFormat => $ext;
     }
 }
 
