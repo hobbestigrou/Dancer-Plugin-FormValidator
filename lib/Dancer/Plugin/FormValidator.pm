@@ -10,6 +10,8 @@ use Dancer::Exception qw(:all);
 use Data::FormValidator;
 use Module::Load;
 
+use 5.010;
+
 #ABSTRACT: Easy validates user input (usually from an HTML form) based on input profile for Dancer applications.
 
 #Register exception
