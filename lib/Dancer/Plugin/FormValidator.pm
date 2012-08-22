@@ -2,8 +2,10 @@ package Dancer::Plugin::FormValidator;
 
 use strict;
 use warnings;
+
 use Dancer ':syntax';
 use Dancer::Plugin;
+
 use Data::FormValidator;
 use Module::Load;
 
@@ -24,27 +26,16 @@ register form_validator_error => sub {
             my @errors = keys(%{$results->{missing}});
             my $string;
 
-            if ( scalar(@errors) == 1 ) {
-                $string = "$settings->{msg}->{single} @errors";
-            }
-            else {
-                $string = "$settings->{msg}->{several} @errors";
-            }
+            $string = scalar(@errors) == 1
+                ? "$settings->{msg}->{single} @errors"
+                : "$settings->{msg}->{several} @errors";
 
             return halt($string);
         }
         else {
-            my $errors;
-
-            if ( $results->has_missing ) {
-                $errors = _error_return('missing');
-            }
-
-           if ( $results->has_invalid ) {
-                $errors = _error_return('invalid');
-           }
-
-           return $errors;
+            return $results->has_missing
+                ? _error_return('missing')
+                : $errors = _error_return('invalid');
         }
     }
 
