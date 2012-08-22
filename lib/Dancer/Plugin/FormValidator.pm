@@ -15,6 +15,21 @@ my $settings = plugin_setting;
 my $dfv;
 my $results;
 
+=method form_validator_error
+
+    form_validator_error('profile_name');
+or
+    form_validator_error('profile_name', $input);
+
+Validate forms.
+
+    input: (Str): Name of profile
+           (HashRef): Data to be validated (optional) if is not present
+                      getting params implicitly
+    output: (HashRef): Field was missing or invalid
+
+=cut
+
 register form_validator_error => sub {
     $results = _dfv_check(@_);
 
@@ -38,6 +53,21 @@ register form_validator_error => sub {
 
     return 0;
 };
+
+=method dfv
+
+    dfv('profile_name');
+or
+    dfv('profile_name', $input);
+
+Validate forms.
+
+    input: (Str): Name of profile
+           (HashRef): Data to be validated (optional) if is not present
+                      getting params implicitly
+    output: A Data::FormValidator::Results object
+
+=cut
 
 register dfv => sub {
     _dfv_check(@_);
@@ -140,7 +170,7 @@ sub _init_object_dfv {
             Body    => $params->{body},
         };
 
-        my $error = form_validator_error( 'profil_contact', $input_hash );
+        my $error = form_validator_error( 'profile_contact', $input_hash );
 
         if ( ! $error ) {
             #the user provided complete and validates
@@ -150,15 +180,15 @@ sub _init_object_dfv {
 
     dance;
 
-The profile_file example:
+Example of profile file:
 
      {
-         add_page => {
+         profile_contact => {
              'required' => [ qw(
                  Name Subject Body
               )],
               msgs => {
-                missing => 'Not Here!',
+                missing => 'Not Here',
               }
          },
      }
@@ -180,9 +210,10 @@ keyword within your L<Dancer> application.
                  single: 'Missing field'
                  several: 'Missing fields'
 
-If you don't use halt, a hashref is return with name of fields for the key and
+If you don't use halt option, a hashref is return with name of fields for the key and
 reason of the value use msgs profile, if you missing specified a msgs in a profil,
-msg single is use. For the profile_file it begins at the application root.
+msg single is use. The profile file it begins at the application root, accept
+multiple format yaml, json or perl.
 
 =head1 CONTRIBUTING
 
