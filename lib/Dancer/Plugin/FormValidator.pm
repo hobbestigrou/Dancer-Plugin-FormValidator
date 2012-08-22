@@ -7,12 +7,7 @@ use Dancer::Plugin;
 use Data::FormValidator;
 use Module::Load;
 
-=head1 NAME
-
-Dancer::Plugin::FormValidator - easy validates user input (usually from an HTML form)
-based on input profile for Dancer applications.
-
-=cut
+#ABSTRACT: Easy validates user input (usually from an HTML form) based on input profile for Dancer applications.
 
 my $settings = plugin_setting;
 my $dfv;
@@ -129,7 +124,6 @@ sub _init_object_dfv {
     }
 }
 
-
 1;
 
 =head1 SYNOPSIS
@@ -210,23 +204,9 @@ You can find documentation for this module with the perldoc command.
 
     perldoc Dancer::Plugin::FormValidator
 
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2010 Natal Ngétal.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
 =head1 SEE ALSO
 
 L<Dancer>
 L<Data::FormValidator>
-
-=head1 AUTHOR
-
-Natal Ngétal
 
 =cut

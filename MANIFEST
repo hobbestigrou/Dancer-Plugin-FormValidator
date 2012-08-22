@@ -1,7 +1,0 @@
-Changes
-MANIFEST
-Makefile.PL
-README
-lib/Dancer/Plugin/FormValidator.pm 
-t/00-load.t
-TODO
