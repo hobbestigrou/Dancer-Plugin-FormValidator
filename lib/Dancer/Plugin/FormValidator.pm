@@ -16,10 +16,7 @@ my $dfv;
 my $results;
 
 register form_validator_error => sub {
-    my ( $profil, $input_hash ) = @_;
-
-    _init_object_dfv() unless defined($dfv);
-    $results = $dfv->check($input_hash, $profil);
+    $results = _dfv_check(@_);
 
     if ( $results->has_invalid || $results->has_missing ) {
         if ( $settings->{halt} ) {
@@ -43,13 +40,7 @@ register form_validator_error => sub {
 };
 
 register dfv => sub {
-    my ( $profil, $params ) = @_;
-
-    _init_object_dfv() unless defined($dfv);
-    $params //= params;
-    $results  = $dfv->check($params, $profil);
-
-    return $results;
+    _dfv_check(@_);
 };
 
 register_plugin;
@@ -73,6 +64,16 @@ sub _error_return {
     }
 
    return $errors;
+}
+
+sub _dfv_check {
+    my ( $profil, $params ) = @_;
+
+    _init_object_dfv() unless defined($dfv);
+    $params //= params;
+    $results  = $dfv->check($params, $profil);
+
+    return $results;
 }
 
 sub _init_object_dfv {
