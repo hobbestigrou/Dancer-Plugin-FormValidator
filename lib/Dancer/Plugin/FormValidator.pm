@@ -32,7 +32,8 @@ Validate forms.
     input: (Str): Name of profile
            (HashRef): Data to be validated (optional) if is not present
                       getting params implicitly
-    output: (HashRef): Field was missing or invalid
+    output: (HashRef): Field was missing or invalid or return 0 if all field is
+                       valid
 
 =cut
 
@@ -62,9 +63,19 @@ register form_validator_error => sub {
 
 =method dfv
 
-    dfv('profile_name');
+    if ( my $results = dfv('profile_name') ) {
+        Do some stuff
+    }
+    else {
+        Report some failure
+    }
 or
-    dfv('profile_name', $input);
+    if ( my $results = dfv ('profile_name', $input) ) {
+        Do some stuff
+    }
+    else {
+        Report some failure
+    }
 
 Validate forms.
 
@@ -199,6 +210,30 @@ Example of profile file:
          },
      }
 
+Example with yml format:
+
+    profile_contact:
+      required:
+        - name
+        - subject
+        - body
+      msgs:
+        missing: Not here
+
+Example with json format:
+    {
+        "profile_contact": {
+            "required": [
+                "name",
+                "subject",
+                "body"
+            ],
+            "msgs": {
+                "missing": "Not here"
+            }
+        }
+    }
+
 =head1 DESCRIPTION
 
 Provides an easy validates user input based on input profile (Data::FormValidator)
@@ -216,10 +251,12 @@ keyword within your L<Dancer> application.
                  single: 'Missing field'
                  several: 'Missing fields'
 
-If you don't use halt option, a hashref is return with name of fields for the key and
+For the profile file it's possible to use json, yml or pl format.
+The halt option is only available with form_validator_error function,
+if you don't use halt option, a hashref is return with name of fields for the key and
 reason of the value use msgs profile, if you missing specified a msgs in a profil,
-msg single is use. The profile file it begins at the application root, accept
-multiple format yaml, json or perl.
+msg single is use. The profile file it begins at the application root. The
+default of profile_file name is profile.yml
 
 =head1 CONTRIBUTING
 
@@ -249,4 +286,3 @@ L<Dancer>
 L<Data::FormValidator>
 
 =cut
-
