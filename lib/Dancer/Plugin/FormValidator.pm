@@ -5,6 +5,7 @@ use warnings;
 use Dancer ':syntax';
 use Dancer::Plugin;
 use Data::FormValidator;
+use Module::Load;
 
 =head1 NAME
 
@@ -13,17 +14,15 @@ based on input profile for Dancer applications.
 
 =cut
 
-our $VERSION = '0.4';
-
 my $settings = plugin_setting;
+my $dfv;
 my $results;
 
 register form_validator_error => sub {
     my ( $profil, $input_hash ) = @_;
 
-    my $profil_file = setting('appdir') . '/' . $settings->{profil_file};
-    my $dfv         = Data::FormValidator->new($profil_file);
-    $results        = $dfv->check($input_hash, $profil);
+    _init_object_dfv() unless defined($dfv);
+    $results = $dfv->check($input_hash, $profil);
 
     if ( $results->has_invalid || $results->has_missing ) {
         if ( $settings->{halt} ) {
@@ -80,7 +79,58 @@ sub _error_return {
    return $errors;
 }
 
-=encoding utf8
+sub _init_object_dfv {
+    my $path_file   = $settings->{profil_file} // 'profile.yml';
+    my $profil_file = setting('appdir') . '/' . $path_file;
+
+    my $available_deserializer = {
+        json => sub {
+            my ( $file ) = @_;
+
+            load JSON::Syck;
+
+            my $data = JSON::Syck::LoadFile($file);
+            return $data;
+        },
+        yml => sub {
+            my ( $file ) = @_;
+
+            load YAML::Syck;
+
+            my $data = YAML::Syck::LoadFile($file);
+            return $data;
+        },
+        pl => sub {
+            my ( $file )  = @_;
+
+            my $exception;
+            my $data;
+
+            {
+                local $@;
+                $data      = do $file;
+                $exception = $@;
+            }
+
+            die $exception if $exception;
+
+            return $data;
+        },
+    };
+
+    $profil_file     =~ m/\.(\w+$)/;
+    my $ext          = $1;
+
+    if ( my $deserialize = $available_deserializer->{$ext} ) {
+        $dfv = Data::FormValidator->new($deserialize->($profil_file));
+    }
+    else {
+        die "Format $ext $profil_file is not supported", "\n";
+    }
+}
+
+
+1;
 
 =head1 SYNOPSIS
 
@@ -122,6 +172,8 @@ The profile_file example:
 Provides an easy validates user input based on input profile (Data::FormValidator)
 keyword within your L<Dancer> application.
 
+=encoding utf8
+
 =head1 CONFIGURATION
 
      plugins:
@@ -135,10 +187,6 @@ keyword within your L<Dancer> application.
 If you don't use halt, a hashref is return with name of fields for the key and
 reason of the value use msgs profile, if you missing specified a msgs in a profil,
 msg single is use. For the profile_file it begins at the application root.
-
-=head1 AUTHOR
-
-Natal Ngétal, C<< <hobbestigrou@erakis.im> >>
 
 =head1 CONTRIBUTING
 
@@ -177,6 +225,8 @@ See http://dev.perl.org/licenses/ for more information.
 L<Dancer>
 L<Data::FormValidator>
 
-=cut
+=head1 AUTHOR
 
-1;
+Natal Ngétal
+
+=cut
