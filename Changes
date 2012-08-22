@@ -2,6 +2,8 @@ Revision history for Dancer-Plugin-FormValidator
 
 {{$NEXT}}
 
+1.122350  2012-08-22 22:09:39 Europe/Paris
+
     Accept multiple format for profile file
     Review documentation
     Use Dist::Zilla to manage release process
