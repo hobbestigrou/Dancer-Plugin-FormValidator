@@ -114,18 +114,18 @@ sub _error_return {
 }
 
 sub _dfv_check {
-    my ( $profil, $params ) = @_;
+    my ( $profile, $params ) = @_;
 
     _init_object_dfv() unless defined($dfv);
     $params //= params;
-    $results  = $dfv->check($params, $profil);
+    $results  = $dfv->check($params, $profile);
 
     return $results;
 }
 
 sub _init_object_dfv {
-    my $path_file   = $settings->{profil_file} // 'profile.yml';
-    my $profil_file = setting('appdir') . '/' . $path_file;
+    my $path_file    = $settings->{profile_file} // 'profile.yml';
+    my $profile_file = setting('appdir') . '/' . $path_file;
 
     my $available_deserializer = {
         json => sub {
@@ -162,11 +162,11 @@ sub _init_object_dfv {
         },
     };
 
-    $profil_file     =~ m/\.(\w+$)/;
-    my $ext          = $1;
+    $profile_file =~ m/\.(\w+$)/;
+    my $ext       = $1;
 
     if ( my $deserialize = $available_deserializer->{$ext} ) {
-        $dfv = Data::FormValidator->new($deserialize->($profil_file));
+        $dfv = Data::FormValidator->new($deserialize->($profile_file));
     }
     else {
         raise ProfileInvalidFormat => $ext;
@@ -245,7 +245,7 @@ keyword within your L<Dancer> application.
 
      plugins:
          FormValidator:
-             profil_file: 'profiles.pl'
+             profile_file: 'profile.pl'
              halt: 0
              msg:
                  single: 'Missing field'
@@ -284,5 +284,6 @@ You can find documentation for this module with the perldoc command.
 
 L<Dancer>
 L<Data::FormValidator>
+L<Dancer::Plugin::DataFormValidator>
 
 =cut
