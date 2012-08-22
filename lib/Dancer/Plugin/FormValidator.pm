@@ -42,6 +42,16 @@ register form_validator_error => sub {
     return 0;
 };
 
+register dfv => sub {
+    my ( $profil, $params ) = @_;
+
+    _init_object_dfv() unless defined($dfv);
+    $params //= params;
+    $results  = $dfv->check($params, $profil);
+
+    return $results;
+};
+
 register_plugin;
 
 sub _error_return {
@@ -201,3 +211,4 @@ L<Dancer>
 L<Data::FormValidator>
 
 =cut
+
