@@ -1,5 +1,13 @@
 Revision history for Dancer-Plugin-FormValidator
 
+{{$NEXT}}
+
+    Accept multiple format for profile file
+    Review documentation
+    Use Dist::Zilla to manage release process
+    Improve code, fix typo and little cosmetic thing
+    Add a new function dfv
+
 0.4 29/04/2011
     Clean and fix encoding in a pod.
 
