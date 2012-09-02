@@ -2,6 +2,8 @@ Revision history for Dancer-Plugin-FormValidator
 
 {{$NEXT}}
 
+1.122460  2012-09-02 19:29:52 Europe/Paris
+
     Add new tests
     Don't use a global variable to get settings
     Fix documentation
