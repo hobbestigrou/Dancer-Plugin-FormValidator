@@ -225,6 +225,7 @@ Example with yml format:
         missing: Not here
 
 Example with json format:
+
     {
         "profile_contact": {
             "required": [
