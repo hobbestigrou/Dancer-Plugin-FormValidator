@@ -2,6 +2,11 @@ Revision history for Dancer-Plugin-FormValidator
 
 {{$NEXT}}
 
+    Add new tests
+    Don't use a global variable to get settings
+    Fix documentation
+    Fix prereqs depends
+
 1.122350  2012-08-22 22:09:39 Europe/Paris
 
     Accept multiple format for profile file
