@@ -19,7 +19,6 @@ register_exception('ProfileInvalidFormat',
     message_pattern => "Unknown format use yml, json or pl: %s"
 );
 
-my $settings = plugin_setting;
 my $dfv;
 my $results;
 
@@ -40,7 +39,8 @@ Validate forms.
 =cut
 
 register form_validator_error => sub {
-    $results = _dfv_check(@_);
+    $results     = _dfv_check(@_);
+    my $settings = plugin_setting;
 
     if ( $results->has_invalid || $results->has_missing ) {
         if ( $settings->{halt} ) {
@@ -95,7 +95,8 @@ register dfv => sub {
 register_plugin;
 
 sub _error_return {
-    my $reason = shift;
+    my $reason   = shift;
+    my $settings = plugin_setting;
 
     my @errors = keys(%{$results->{$reason}});
     my $errors;
@@ -126,6 +127,7 @@ sub _dfv_check {
 }
 
 sub _init_object_dfv {
+    my $settings     = plugin_setting;
     my $path_file    = $settings->{profile_file} // 'profile.yml';
     my $profile_file = setting('appdir') . '/' . $path_file;
 
