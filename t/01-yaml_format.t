@@ -12,7 +12,17 @@ use lib 't/lib';
 use TestApp;
 use Data::FormValidator;
 
-plan tests => 7;
+local $@;
+eval {
+    require YAML::Syck;
+};
+
+if ( my $e = $@ ) {
+    plan skip_all => 'YAML::Syck is not present, install him if you want use yml format';
+}
+else {
+    plan tests => 7;
+}
 
 setting appdir => setting('appdir') . '/t';
 

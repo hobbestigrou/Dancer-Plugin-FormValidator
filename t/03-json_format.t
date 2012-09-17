@@ -12,7 +12,18 @@ use lib 't/lib';
 use TestApp;
 use Data::FormValidator;
 
-plan tests => 7;
+local $@;
+eval {
+    require JSON::Syck;
+};
+
+if ( my $e = $@ ) {
+    plan skip_all => 'JSON::Syck is not present, install him if you want use json format';
+}
+else {
+    plan tests => 7;
+}
+
 
 setting appdir => setting('appdir') . '/t';
 setting plugins => { FormValidator => { profile_file => 'profile.json'}};
