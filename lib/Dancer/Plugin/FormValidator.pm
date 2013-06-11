@@ -92,7 +92,7 @@ register dfv => sub {
     _dfv_check(@_);
 };
 
-register_plugin;
+register_plugin for_versions => [2];
 
 sub _error_return {
     my $reason   = shift;
